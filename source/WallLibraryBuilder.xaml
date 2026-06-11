@@ -1,0 +1,363 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Wall Library Builder"
+        Width="780"
+        Height="750"
+        MinWidth="760"
+        MinHeight="720"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F7F9FC">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#10213A"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="31"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="9,3"/>
+            <Setter Property="Background" Value="#FBFCFE"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="Foreground" Value="#10213A"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="29"/>
+            <Setter Property="Padding" Value="8,0,8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="29"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+        </Style>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderBrush" Value="#D8E0EA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12"/>
+        </Style>
+
+        <Style x:Key="Subtle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#5F7191"/>
+            <Setter Property="FontSize" Value="11"/>
+        </Style>
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#10213A"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="18,16,18,12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="68"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="54"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel VerticalAlignment="Top">
+                <TextBlock Text="WALL LIBRARY BUILDER"
+                           FontWeight="Bold"
+                           FontSize="22"/>
+                <TextBlock Text="Generate Revit wall types from CSV templates"
+                           Style="{StaticResource Subtle}"
+                           FontSize="12"
+                           Margin="0,3,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="Arch-" FontWeight="Bold" FontSize="17"/>
+                    <TextBlock Text="X" FontWeight="Bold" FontSize="17" Foreground="#00D63F"/>
+                </StackPanel>
+                <TextBlock Text="Studio" HorizontalAlignment="Right" Style="{StaticResource Subtle}" FontWeight="SemiBold"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- MAIN BODY -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="420"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="292"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- LEFT COLUMN -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="310"/>
+                    <RowDefinition Height="88"/>
+                </Grid.RowDefinitions>
+
+                <!-- SOURCE -->
+                <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="34"/>
+                            <RowDefinition Height="44"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Text="SOURCE DATA" Style="{StaticResource SectionTitle}"/>
+                            <TextBlock Text="Upload CSV or get a blank template to start."
+                                       Style="{StaticResource Subtle}"
+                                       Margin="0,3,0,0"/>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="9"/>
+                                <ColumnDefinition Width="38"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="csvPathBox"/>
+                            <Button Grid.Column="2" Content="..." Click="browse_csv"/>
+                        </Grid>
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0">
+                            <Button Content="Get Template" Width="112" Click="generate_template" Margin="0,0,10,0"/>
+                            <Button Content="Preview Data" Width="112" Click="preview_data"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- PREVIEW -->
+                <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="76"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="44"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="104"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="PREVIEW" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Read-only check before model changes."
+                                           Style="{StaticResource Subtle}"
+                                           Margin="0,4,0,0"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="1" Background="#F4FFF6" BorderBrush="#D6EBDD" BorderThickness="1" CornerRadius="7" Padding="9" VerticalAlignment="Top">
+                                <TextBlock x:Name="summaryText" Text="No data loaded." FontSize="11" Foreground="#009933" TextWrapping="Wrap"/>
+                            </Border>
+                        </Grid>
+
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <DataGrid x:Name="previewGrid"
+                                      AutoGenerateColumns="False"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      CanUserResizeRows="False"
+                                      HeadersVisibility="Column"
+                                      RowHeaderWidth="0"
+                                      GridLinesVisibility="All"
+                                      FontSize="10"
+                                      MinWidth="530"
+                                      IsReadOnly="False">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Header="Use" Binding="{Binding Import}" Width="48"/>
+                                    <DataGridTextColumn Header="Wall Type" Binding="{Binding TypeName}" Width="205" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Layers" Binding="{Binding LayerCount}" Width="58" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="78" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="145" IsReadOnly="True"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,8,0,0">
+                            <Button Content="Select / Deselect All" Width="132" Click="toggle_selection"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- OPTIONS -->
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="23"/>
+                            <RowDefinition Height="34"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="84"/>
+                            <ColumnDefinition Width="142"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="62"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="6" Text="OPTIONS" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Grid.Row="1" Text="If type exists" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" x:Name="modeCombo" VerticalAlignment="Center" SelectionChanged="mode_changed">
+                            <ComboBoxItem Content="Update existing"/>
+                            <ComboBoxItem Content="Skip existing"/>
+                            <ComboBoxItem Content="Create renamed copy"/>
+                        </ComboBox>
+
+                        <ComboBox Grid.Row="1" Grid.Column="3" x:Name="renameAffixModeCombo" VerticalAlignment="Center" Visibility="Collapsed" FontSize="10">
+                            <ComboBoxItem Content="Prefix"/>
+                            <ComboBoxItem Content="Suffix"/>
+                        </ComboBox>
+                        <TextBox Grid.Row="1" Grid.Column="5" x:Name="renameAffixTextBox" Text=" - Imported" VerticalAlignment="Center" Visibility="Collapsed" FontSize="10"/>
+
+                        <ComboBox x:Name="baseWallCombo" Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- RIGHT COLUMN -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="260"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="278"/>
+                </Grid.RowDefinitions>
+
+                <!-- REQUIRED MAPPING -->
+                <Border Grid.Row="0" Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="43"/>
+                            <RowDefinition Height="38"/>
+                            <RowDefinition Height="38"/>
+                            <RowDefinition Height="38"/>
+                            <RowDefinition Height="38"/>
+                            <RowDefinition Height="38"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="116"/>
+                            <ColumnDefinition Width="128"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.ColumnSpan="2">
+                            <TextBlock Text="REQUIRED MAPPING" Style="{StaticResource SectionTitle}"/>
+                            <TextBlock Text="Map the required columns from your CSV."
+                                       Style="{StaticResource Subtle}"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="1" Text="Wall Type Name *" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" x:Name="mapType" Width="126"/>
+
+                        <TextBlock Grid.Row="2" Text="Layer Order *" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="2" Grid.Column="1" x:Name="mapOrder" Width="126"/>
+
+                        <TextBlock Grid.Row="3" Text="Function *" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" x:Name="mapFunction" Width="126"/>
+
+                        <TextBlock Grid.Row="4" Text="Material *" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="4" Grid.Column="1" x:Name="mapMaterial" Width="126"/>
+
+                        <TextBlock Grid.Row="5" Text="Thickness (mm) *" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="5" Grid.Column="1" x:Name="mapThickness" Width="126"/>
+                    </Grid>
+                </Border>
+
+                <!-- OPTIONAL MAPPING -->
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="38"/>
+                            <RowDefinition Height="162"/>
+                            <RowDefinition Height="42"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Text="OPTIONAL MAPPING" Style="{StaticResource SectionTitle}"/>
+                            <TextBlock Text="Select optional type parameters to map."
+                                       Style="{StaticResource Subtle}"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="158">
+                            <StackPanel x:Name="optionalParamsPanel" Margin="0,0,8,0"/>
+                        </ScrollViewer>
+
+                        <Grid Grid.Row="2" VerticalAlignment="Bottom" Margin="0,4,0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="118"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="112"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="↻ Refresh" Height="28" Click="refresh_parameters"/>
+                            <Button Grid.Column="2" Content="Auto Map" Height="28" Click="auto_map"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- FOOTER -->
+        <Grid Grid.Row="2" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="395"/>
+                <ColumnDefinition Width="190"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="Arch-X Studio - Architecture &amp; Technology"
+                       VerticalAlignment="Bottom"
+                       Margin="0,0,0,5"
+                       Foreground="#6B7C99"
+                       FontSize="10"/>
+
+            <TextBlock x:Name="statusText"
+                       Grid.Column="0"
+                       Text=""
+                       Visibility="Collapsed"/>
+
+            <Button Grid.Column="1"
+                    Content="CREATE / UPDATE"
+                    Height="36"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Background="#00D63F"
+                    BorderBrush="#00B837"
+                    Foreground="White"
+                    VerticalAlignment="Top"
+                    Margin="0,6,0,0"
+                    Click="create_walls"/>
+
+            <Button Grid.Column="3"
+                    Content="REPORT"
+                    Height="36"
+                    FontSize="12"
+                    VerticalAlignment="Top"
+                    Margin="0,6,0,0"
+                    Click="show_issues"/>
+        </Grid>
+    </Grid>
+</Window>
